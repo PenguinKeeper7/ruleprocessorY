@@ -110,6 +110,13 @@ std::string convert_from_hashcat(unsigned long line_counter, std::string rule) {
         }
             // check if the rule is 2 characters wide
         else if (double_wide.count(baseRule)) {
+			// check for parameters
+        	if(rule.length() != 2){
+        		std::cerr << "Unknown rule format on line " << line_counter << ": " << baseRule << ':' << rule << std::endl;
+            	offset = 254;
+            	continue;
+        	}
+        	
             // check for hex notation
             if (rule.substr(offset + 1, 2) == "\\x") {
                 formatted_rule += rule.substr(offset, 5) + '\t';
@@ -122,6 +129,13 @@ std::string convert_from_hashcat(unsigned long line_counter, std::string rule) {
         }
             // check if the rule is 3 characters wide
         else if (triple_wide.count(baseRule)) {
+        	// check for parameters
+        	if(rule.length() != 3){
+        		std::cerr << "Unknown rule format on line " << line_counter << ": " << baseRule << ':' << rule << std::endl;
+            	offset = 254;
+            	continue;
+        	}
+        	
             // check for hex notation
             if (rule.substr(offset + 1, 2) == "\\x" || rule.substr(offset + 2, 2) == "\\x") {
                 formatted_rule += rule.substr(offset, 6) + '\t';
